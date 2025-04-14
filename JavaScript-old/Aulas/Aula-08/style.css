@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+body {
+    text-align: center;
+}
+
+button {
+    height: 75px;
+    width: 150px;
+    background-color: cyan;
+    box-shadow: 2px 2px 2px 2px;
+    border-radius: 3px;
+}

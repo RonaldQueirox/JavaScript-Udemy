@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primeiros passos com DOM</title>
+    <style>
+        body {
+            background-color: rgb(68, 125, 199);
+            color: white;
+            font: normal 18pt Arial;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Iniciando estudos com DOM</h1>
+    <p>Aqui vai o resultado</p>
+    <p>Apredendo a usar o <strong>DOM</strong> em JavaScript</p>
+    <div id="msg">Clique em mim</div>
+    <div name="mensg"> Segundo Div</div>
+    <div class="mseng"> Terceira Div</div>
+    <div id="mensagem"> Quarta Div</div>
+
+    <script>
+        var corpo = window.document.body
+        // da acesso ao body com a váriavel corpo
+        var p1 = window.document.getElementsByTagName('p')[0]
+        // getElementsByTagName serve para pegar os elementos de uma tag como por exemplo os parágrafos 
+        // o 0 entre cochetes serve como índice semelhantes ao php e python
+        var d = window.document.getElementById('msg')
+        // serve para pegar o elemento dentro de uma ID
+        window.document.write('Está escrito assim: ' + p1.innerText)
+        // innerText pega o que está dentro do parágrafo
+        p1.style.color = 'blue'
+        //este codigo acima muda a cor do parágrafo
+        d.style.background = 'green'
+        d.innerText = 'Estou aguardando...'
+        // modifica o texto original
+        var e = window.document.getElementsByName('mensg')[0]
+        // funciona semelhante ao getElementById 
+        e.style.background = 'purple'
+        e.innerText = 'Está aguardando a segunda div.....'
+
+        var s = window.document.getElementsByClassName('mseng')[0]
+        // funciona basicamente como os outros dois
+        s.style.background = 'gray'
+        s.innerText = 'Está é a terceira div......'
+
+        // código utilizando querySelector() aconselhado por diversos manuais
+
+        var sel = window.document.querySelector('div#mensagem')
+        // a form de selecionar é muito semelhante ao do CSS
+        sel.style.color = 'yellow'
+        sel.style.background = 'skyblue'
+        sel.innerText = 'Está é a quarta div.....'
+    </script>
+</body>
+</html>

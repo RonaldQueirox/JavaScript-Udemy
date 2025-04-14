@@ -1,0 +1,9 @@
+@charset "UTF-8";
+
+body {
+    text-align: center;
+}
+input {
+    padding: 50px;
+    font-size: 40px;
+}

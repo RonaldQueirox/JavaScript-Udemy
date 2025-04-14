@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apredendo JS</title>
+    <link rel="stylesheet" href="style.css">   
+</head>
+<body>
+    <h1>Apredendo JavaScript</h1>
+    <h2>Eventos JS</h2>
+    <button onclick="evento_click()">Clique aqui</button> <br>
+    <button ondblclick="eventodbl_click()">Click 2 Vezes</button> <br>
+    <select onchange="mudou()" id="itens">
+        <option value="1">Valor 1</option>
+        <option value="2">Valor 2</option>
+        <option value="3">Valor 3</option>
+        <option value="4">Valor 4</option>
+    </select>
+<br>
+    <div id="d1" onmousemove="adiciona_texto()" onmouseout="muda_cor_roxo()" 
+    onmouseover="muda_cor()"></div><br>
+
+    <input id="inp" type="text" placeholder="Digite Algo">
+    <script src="app.js"></script>
+</body>
+</html>
