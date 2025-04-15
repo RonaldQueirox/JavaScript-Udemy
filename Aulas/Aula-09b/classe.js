@@ -10,4 +10,14 @@ class Pai extends Avo {
         this.profissao = profissao
     }
 }
-console.log(Pai)
+
+const PAI = new Pai
+console.log(PAI)
+
+class Filho extends Pai {
+    constructor() {
+        super('Silva')
+    }
+}
+const FILHO = new Filho
+console.log(FILHO)
