@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sorteio Volei das Gays</title>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    .container {
+      width: 400px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      margin-top: 0;
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    label {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    select, input[type="submit"] {
+      margin: 5px 0;
+      padding: 10px;
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    input[type="submit"] {
+      background-color: #333;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .result {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .team-list {
+      margin-top: 10px;
+      padding: 0;
+    }
+
+    .team {
+      margin-bottom: 10px;
+    }
+
+    .team-name {
+      font-weight: bold;
+    }
+
+    .leader {
+      margin-left: 20px;
+    }
+
+    .players {
+      margin-left: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Sorteio Volei</h1>
+    <form id="sorteioForm">
+      <label for="numTeams">Quantidade de Times:</label>
+      <select id="numTeams" required>
+        <option value="1">1 Time</option>
+        <option value="2">2 Times</option>
+        <option value="3">3 Times</option>
+      </select>
+
+      <label for="players">Lista de Jogadores:</label>
+      <textarea id="players" rows="4" required></textarea>
+
+      <input type="submit" value="Sortear Times">
+    </form>
+
+    <div id="resultado" class="result"></div>
+
+    <script>
+      var numTeams, players, teams, currentPlayerIndex, leaderIndex;
+
+      document.getElementById("sorteioForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        sortearTimes();
+      });
+
+      function sortearTimes() {
+        numTeams = parseInt(document.getElementById("numTeams").value);
+        players = document.getElementById("players").value.trim().split("\n").map(function(player) {
+          return player.trim();
+        });
+
+        if (players.length < numTeams) {
+          alert("Não há jogadores suficientes para formar os times.");
+          return;
+        }
+
+        shuffle(players);
+
+        teams = [];
+        for (var i = 0; i < numTeams; i++) {
+          var team = {
+            leader: "",
+            players: []
+          };
+          teams.push(team);
+        }
+
+        for (var i = 0; i < numTeams; i++) {
+          var randomIndex = Math.floor(Math.random() * players.length);
+          var leader = players[randomIndex];
+          players.splice(randomIndex, 1);
+          teams[i].leader = leader;
+        }
+
+        var resultadoDiv = document.getElementById("resultado");
+        resultadoDiv.innerHTML = "<h2>Resultado</h2>";
+        for (var i = 0; i < numTeams; i++) {
+          var team = teams[i];
+          var teamDiv = document.createElement("div");
+          teamDiv.classList.add("team");
+          teamDiv.innerHTML = "<span class='team-name'>Time " + (i + 1) + "</span>";
+          teamDiv.innerHTML += "<span class='leader'>Líder: " + team.leader + "</span>";
+          teamDiv.innerHTML += "<ul class='players'></ul>";
+          resultadoDiv.appendChild(teamDiv);
+        }
+
+        showLeaderSelection();
+      }
+
+      function showLeaderSelection() {
+        leaderIndex = 0;
+        var leaderSelectDiv = document.createElement("div");
+        leaderSelectDiv.id = "leaderSelect";
+        leaderSelectDiv.classList.add("result");
+        leaderSelectDiv.innerHTML = "<h2>Vez do Líder: " + teams[leaderIndex].leader + "</h2><p>Escolha um jogador para o seu time:</p>";
+        var playersSelect = document.createElement("select");
+        playersSelect.id = "playersSelect";
+        leaderSelectDiv.appendChild(playersSelect);
+        var confirmButton = document.createElement("button");
+        confirmButton.textContent = "Confirmar";
+        confirmButton.addEventListener("click", confirmSelection);
+        leaderSelectDiv.appendChild(confirmButton);
+        document.getElementById("resultado").appendChild(leaderSelectDiv);
+
+        updatePlayerOptions();
+      }
+
+      function updatePlayerOptions() {
+        var playersSelect = document.getElementById("playersSelect");
+        playersSelect.innerHTML = "";
+        for (var i = 0; i < players.length; i++) {
+          var option = document.createElement("option");
+          option.value = players[i];
+          option.textContent = players[i];
+          playersSelect.appendChild(option);
+        }
+      }
+
+      function confirmSelection() {
+        var selectedPlayer = document.getElementById("playersSelect").value;
+        teams[leaderIndex].players.push(selectedPlayer);
+        players.splice(players.indexOf(selectedPlayer), 1);
+
+        leaderIndex = (leaderIndex + 1) % numTeams;
+
+        var leaderSelectDiv = document.getElementById("leaderSelect");
+        leaderSelectDiv.innerHTML = "<h2>Vez do Líder: " + teams[leaderIndex].leader + "</h2><p>Escolha um jogador para o seu time:</p>";
+        var playersSelect = document.createElement("select");
+        playersSelect.id = "playersSelect";
+        leaderSelectDiv.appendChild(playersSelect);
+        var confirmButton = document.createElement("button");
+        confirmButton.textContent = "Confirmar";
+        confirmButton.addEventListener("click", confirmSelection);
+        leaderSelectDiv.appendChild(confirmButton);
+
+        if (players.length === 0) {
+          leaderSelectDiv.parentNode.removeChild(leaderSelectDiv);
+
+          var resultadoDiv = document.getElementById("resultado");
+          for (var i = 0; i < numTeams; i++) {
+            var team = teams[i];
+            var teamDiv = resultadoDiv.getElementsByClassName("team")[i];
+            var playersList = teamDiv.getElementsByClassName("players")[0];
+            for (var j = 0; j < team.players.length; j++) {
+              var playerItem = document.createElement("li");
+              playerItem.textContent = team.players[j];
+              playersList.appendChild(playerItem);
+            }
+          }
+        } else {
+          updatePlayerOptions();
+        }
+      }
+
+      function shuffle(array) {
+        for (var i = array.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var temp = array[i];
+          array[i] = array[j];
+          array[j] = temp;
+        }
+      }
+    </script>
+  </div>
+</body>
+</html>

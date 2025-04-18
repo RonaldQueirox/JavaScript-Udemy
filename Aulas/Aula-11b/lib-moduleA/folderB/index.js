@@ -1,0 +1,1 @@
+this.vlw = "Isagi Yoichi"
